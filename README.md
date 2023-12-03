@@ -297,7 +297,15 @@ For each dict, starting with the long digits we can check if the key is present 
 
 This gives us the correct answer with the sample input, but our answer is still incorrect with the final input.
 
-**to be continued...**
+Correction to the above. Turns out the following should be the case:
+
+`oneight` should convert to 18. 
+
+To fix this, I'll change the replace function to check the char just after the number replacement. A little bit hacky, but given as chars aren't read into the final sum it doesn't really matter.
+
+This does work, and gives us the correct answer for part 2!
+
+
 
 <!-- # Day 2
 
