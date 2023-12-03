@@ -62,15 +62,21 @@ def solve_day1_part2(input_data):
             # print(segment)
             for key, value in longDigits.items():
                 if key in segment:
-                    line = line.replace(key, value)
+                    ending = key[-1]
+                    line = line.replace(key, value + ending)
+                    print(line)
                     # print("replaced " + segment + " with " + value)
             for key, value in midDigits.items():
                 if key in segment:
-                    line = line.replace(key, value)
+                    ending = key[-1]
+                    line = line.replace(key, value + ending)
+                    print(line)
                     # print("replaced " + segment + " with " + value)
             for key, value in shortDigits.items():
                 if key in segment:
-                    line = line.replace(key, value)
+                    ending = key[-1]
+                    line = line.replace(key, value + ending)
+                    print(line)
                     # print("replaced " + segment + " with " + value)
         
         print(line)
