@@ -17,7 +17,7 @@ For each day I think of the algorithmic approaches without consulting any AI too
 ## Daily notes:
 
 [Day 1: Trebuchet?! (String Manipulations)](#day-1) \
-[Day 2: Cube Conundrum](#day-2) \
+[Day 2: Cube Conundrum (String Manipulations + Parsing)](#day-2) \
 [Day 3: Gear Ratios](#day-3) 
 <!-- [Day 4: ...](#day-4)   -->
 
