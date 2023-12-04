@@ -2,19 +2,24 @@
 
 Main goals:
 - To learn how to break down problems into it's moving parts
+- To come up with algorithm approaches giving pros and cons of each one
 - To identify clear edge cases and handle them before testing the code on the input data
-- To use test-driven development to handle the edge cases against the given sample input
 
-Going to document my thought process here, considering different algorithmic approaches.
+I'm going to document my thought process here, considering different algorithmic approaches.
 
 **Language**: Python.
 
+## Use of AI
+AI tools such as GPT are used strategically to help guide me on some parts of the AoC, more specifically parsing. Parsing inputs can be a pain, and they aren't directly relevant to building good problem solving skills. Of course, being good at parsing helps a lot, but I don't want to spend too much time on that for this year.
+
+For each day I think of the algorithmic approaches without consulting any AI tools. I want to understand how the algorithm would work at a more abstract level as I believe this is more useful than the final code written. The ability to solve coding problems is two-fold: coming up with a useful algorithm, as well as writing code that implements that algorithm well. The former builds up the latter.
+
 ## Daily notes:
 
-[Day 1: Trebuchet?! (String Manipulations)](#day-1) 
-<!-- [Day 2: Cube Conundrum](#day-2) \ -->
-<!-- [Day 3: ...](#day-3) \
-[Day 4: ...](#day-4)  -->
+[Day 1: Trebuchet?! (String Manipulations)](#day-1) \
+[Day 2: Cube Conundrum](#day-2) \
+[Day 3: Gear Ratios](#day-3) 
+<!-- [Day 4: ...](#day-4)   -->
 
 # Day 1
 The goal is to find the specific calibration value for each line in the input. 
@@ -132,7 +137,7 @@ We could create a list comprehension function to count how many digits there are
 
 Though it made add to the time complexity, the trade-off may be worth it in the end. 
 
-I'll see if I can return the runtime of both approaches.
+<!-- I'll see if I can return the runtime of both approaches. -->
 
 ## Code - Part 1
 
@@ -305,10 +310,127 @@ To fix this, I'll change the replace function to check the char just after the n
 
 This does work, and gives us the correct answer for part 2!
 
+### Conclusions
+It was a nice problem, I like that you had to be careful with using str.replace or Regex (as other people used). It forced you to think, which is good. For a 1st day, it's probably on the slightly harder end, but all in all, a fun problem to do. 
 
+Documenting my thought process was helpful too, cause even though this took much longer than solving it, I have these notes to look back on. It also helps me see my thought process (though I probably could have explained some areas better). So I'll try to continue to do these notes where I can.
 
-<!-- # Day 2
+# Day 2
+The goal is to determine which games would be possible, with the following number of cubes: ``12 red cubes, 13 green cubes, and 14 blue cubes.``
+
+Each game has a certain number of rounds, where the Elf brings out some of the cubes in the bag, and counts the number of each occurence. The cubes are returned back into the bag after each round.
+
+Rounds are separated by semi-colons. 
+
+E.g.
+
+```
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+```
+
+With this game, it's possible that it would fit the number of cubes stated above. 
+
+It's important to note, that you can't simply sum up the totals of the cubes in all rounds. As the cubes are returned after each one, the same cube could be picked up in future rounds.
+
+To check that a game is possible with the above configuration, it's a matter of checking whether any round exceeds the configuration. 
+
+At least that's what I can see at first glance.
+
+Though I imagine there will be an annoying edge case somewhere that I'll discover.
+
+The output is the sum of the game IDs where the game is possible with the above configuration.
+
+## Algorithmic approach
+I feel like python dictionaries are a good option to store the data. A dictionary for each round would work, with if statements to check if numbers exceed the configuration.
+
+Here's what I'm thinking:
+1. Iterate through each line in the file
+2. Seperate each line with spaces
+3. Extract the game ID
+4. Create a list of dictionaries, where each dictionary is 1 round in a game.
+5. Extract number of cubes and cube colour and store into the dictionary
+6. For the cubes in each round, check if the colour ends in `;`, if it does, that's the end of a round. 
+7. Check if that dictionary exceeds the configuration, if it does, stop the checking and add the game ID to a `total` variable.
+
+Fairly straightforward approach. Slightly space intensive, but it should hopefully work.
+
+## Code
+
+The approach I took was to separate each input line by space. Which made sense in my head, but I soon realised that it made
+parsing the inputs, very hard. 
+
+I kept on creating dictionaries to try and store each game, but I didn't realise that if `2 green` appears twice in a game, it would get replaced completely (as dictionary keys must be unique).
+
+So the dictionary approach, was completely wrong in this instance.
+
+I was spending a lot of time just trying to get the inputs into a way that would make sense.
+
+I decided to consult GPT to see how it would approach the parsing element of this problem.
+
+```
+## modified code based on what GPT gave me
+for round in input_str.split(";"):
+    print('round: ' + round)
+    selections = round.split(",")
+    print(selections)
+
+    for selection in selections:
+        print(selection)
+        selection = selection.strip().split()
+        print(selection)
+
+# OUTPUT
+round:  3 blue, 4 red       # current round
+[' 3 blue', ' 4 red']       # current round into list
+ 3 blue                     # number and colour selection
+['3', 'blue']               # separate colour and number
+ 4 red
+['4', 'red']
+```
+Seeing that it first split the line by semi-colon, then by comma, made a lot more sense. This output makes it a lot easier to solve part 1. 
+
+## Problems encountered
+
+I fell into more parsing problems, trying to extract the Game ID from the string. It's easy to write something like:
+
+`gameId = input_str[5]`
+
+For single digit IDs. Once you get to double digits, the code would break.
+
+After looking at the input data myself, I realised that game ID increments anyways, so I could just increment a counter and use that as the ID.
+
+That meant that I could send the string that has the `Game XX:` element removed, making it easier for the algorithm to behave.
+
+With that, part 1 is complete!
+
+## Part 2 - what's changed?
+
+Now the question has changed: What is the **fewest number of cubes** of each color that could have been in the bag to make the game possible?
+
+The final output needs to be the power of a set of cubes (the number of cubes multiplied together), summed up.
+
+This part 2 at a glance seems a lot easier than part 1. I imagine it's simply a matter of storing the highest number that someone rolls in a given round, for each colour. Then replacing it if the number increases.
+
+This is where a dictionary can be helpful, as you can easily override and store the colour number pairs.
+
+By changing the if statement to update the dictionary with the highest value, this solved part 2 quite effectively.
+
+## Conclusions and lessons
+From part 1, main lesson I'm learning is to actually look and study the input data. See what you notice and use that to help guide how you process the input.
+
+It's also good to try parsing inputs in different ways, to see what output you get. Parsing by space made the problem really hard to solve, whereas dealing with each line as a string and using lists, was much easier.
+
+Breaking it down to work on creating a function that works for 1 line, is good. It worked quite well for day 2, and I think that would be really useful going forward, where possible.
+
+It's good to challenge and see where edge cases may occur. Note them down and see how you could approach them.
+
+I've not really been using TDD that much for these challenges, as I feel simply documenting my thought process is effective for the early days. For future ones, I'll consider using TDD.
 
 # Day 3
 
+
+
+
+
+<!-- 
 # Day 4 -->
