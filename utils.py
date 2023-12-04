@@ -17,3 +17,4 @@ def read_input_space(textfile):
     with open(textfile) as f:
         input_data = [i.split(" ") for i in f]
     return input_data
+
