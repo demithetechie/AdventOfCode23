@@ -477,9 +477,9 @@ And it's output could show where the numbers are in relation to the main point. 
 To explain this better, we use vector logic from the central point. The reason it's written slightly backwards, is because array rows increase downwards rather than upwards.
 
 ```
-| [-1,-1] [0,-1] [0,1] |
+| [-1,-1] [-1,0] [-1,1] |
 | [0,-1]  [0,0]  [0,1] |
-| [1,-1]  [0,1]  [1,1] |
+| [1,-1]  [1,0]  [1,1] |
 ```
 
 Using this reference, we can return the points and take them away from the actual central point to find their actual location in the big array.
