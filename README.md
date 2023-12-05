@@ -427,6 +427,70 @@ It's good to challenge and see where edge cases may occur. Note them down and se
 I've not really been using TDD that much for these challenges, as I feel simply documenting my thought process is effective for the early days. For future ones, I'll consider using TDD.
 
 # Day 3
+The goal of this challenge is to check whether a number is adjacent to a special character, in a 2D space.
+
+E.g.
+
+```
+467..114..
+...*......
+..35..633.
+......#...
+617*......
+```
+
+In this section, `467, 35, 633` and  `617` are adjacent to a special character (anything that isn't a period or a number).
+
+I've generally found 2D problems to be quite hard, I always end up with some complicated situation. I'm going to try and see if I can come up with a more optimal solution this time round.
+
+## Algorithmic approach
+2D arrays seem to be the best call for problems like this. 
+
+1. Convert input into a 2D array, char separated
+2. Iterate through the 2D array
+3. If a special character is detected, check all neighbouring characters for a number
+4. If a number is found, find out where the full number is (by checking just before and just after it) then add to the total
+5. Change the chars where the number is to dots, so that they aren't picked up again (in case the number is next to another special character: edge case!)
+
+Seems like a simple approach. 
+
+I think I'll code a separate function to handle the surrounding character checking, and call it when a special character is detected. 
+
+It could return the indexes where numbers are present, and then the main algorithm can determine where the number starts and ends.
+
+It's input could be the surrounding array, like so:
+
+```
+| 7 . . |
+| . * . |
+| 3 5 . |
+```
+
+And it's output could show where the numbers are in relation to the main point. Like so:
+
+```
+[-1,-1]
+[1, -1]
+[0, 1]
+```
+
+To explain this better, we use vector logic from the central point. The reason it's written slightly backwards, is because array rows increase downwards rather than upwards.
+
+```
+| [-1,-1] [0,-1] [0,1] |
+| [0,-1]  [0,0]  [0,1] |
+| [1,-1]  [0,1]  [1,1] |
+```
+
+Using this reference, we can return the points and take them away from the actual central point to find their actual location in the big array.
+
+It means that the function dealing with surrounding items, doesn't need the full array to function. This is a good example of abstraction, not giving functions more info than they need.
+
+## Code
+
+
+
+
 
 
 
