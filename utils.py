@@ -18,3 +18,9 @@ def read_input_space(textfile):
         input_data = [i.split(" ") for i in f]
     return input_data
 
+# read input data from textfile as string in a list, comma separated
+def read_input_char(textfile):
+    with open(textfile) as f:
+        input_data = [list(line.strip()) for line in f]
+    return input_data
+
